@@ -5,7 +5,7 @@ A sample SDN application that works with Elbrys' OpenDaylight as a service (ODL-
 1.0.0
 
 # Prerequisites
-   - A free account on Elbrys ODL-S
+   - A free account on Elbrys ODL-S with an OpenFlow switch connected to it (virtual (Mininet) switch will work)
        - Go to http://dev.elbrys.com and follow the instructions there
    - Python 2.7.x: 
        - Test if your system already has it
