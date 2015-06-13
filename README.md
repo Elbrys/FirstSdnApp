@@ -54,7 +54,7 @@ optional arguments:
 
 # Example Execution
 ```bash
-Jamess-MacBook-Air:FirstSdnApp jeb$ python FirstSdnApp.py --id jebpublic@gmail.com --secret blitz1023 --switch 1
+Jamess-MacBook-Air:FirstSdnApp jeb$ python FirstSdnApp.py --id myappid --secret myappsecret  --switch 1
 ODL-S App1
 Version: 1.0
 A very simple 'hello world' application that uses ODL-S.
