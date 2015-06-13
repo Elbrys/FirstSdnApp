@@ -50,7 +50,7 @@ def CreateApp(authToken, switch, parser):
     # This calls the  api to create an application
     # RETURNS: app identifier
     url = odlsBaseUrl + '/applications'
-    payload = {'name': 'Example ODL-S app1.py for switch: ' + switch,
+    payload = {'name': 'FirstSdnApp - Example ODL-S for switch: ' + switch,
                 'scope': {'vnets':[switch]}}
     headers = {'content-type': 'application/json',
                'Authorization': 'bearer ' + authToken}
@@ -156,8 +156,12 @@ def main():
         appId = CreateApp(authToken, args.switch,parser)
         if (appId):
             try:
-                print "...application created with id:" + appId + ".  Now that an application is connected to your "
-                print "switch traffic of connected user devices will be blocked until a policy is defined."
+                print "...application created with id:" + appId 
+                print " "
+                print "Now that an application is connected to your "
+                print " switch any traffic to/from connected user devices will be blocked until a policy is defined."
+                print " Also, you can go to your ODL-S dashboard (sdn-developer.elbrys.com) and refresh the screen "
+                print " you will see this application listed in the applications table."
                 print " "
                 print "Connect a user device (laptop, tablet, phone) to a port on your network device."
                 print " "
@@ -173,7 +177,7 @@ def main():
                 print " "
                 print "From your user device prove to yourself you now DO have connectivity.  Try to ping something."
                 print " "
-                raw_input("Press Enter end this application.")
+                raw_input("Press Enter to end this application.")
             except Exception as inst:
                 print " Exception detected..."
                 print type(inst)     # the exception instance
@@ -182,7 +186,11 @@ def main():
             finally:
                 print "Deleting application..."
                 DeleteApp(authToken, appId)
-                print "...application deleted.  Once the application is deleted you will have connectivity once again."
+                print "...application deleted."
+                print ""
+                print "Now that the application is deleted you will continue to have connectivity."
+                print "If you go to your ODL-S dashboard (sdn-developer.elbrys.com) and refresh the screen you will "
+                print " no longer see this application listed."
 
  
 # The BASE url where the ODL-S RESTful api listens
