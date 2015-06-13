@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 """
 DESCRIPTION:
-    This is an example Python application that demonstrates how to use Elbrys ODL as a service - ODL-S (dev.elbrys.com) to
+    This is an extremely simple Python application that demonstrates how to use Elbrys ODL as a service - ODL-S (dev.elbrys.com) to
     control endpoint user sessions access to the network.
 
     This application will connect to one of the switches that you have connected in the ODL-S portal (sdn-developer.elbrys.com)
-    and redirect all endpoints that connect to the switch to a specific url.
+    and demonstrate blocking and unblocking of network traffic for any device connected to the switch. 
 
 PRE-REQUISITES:
    1.  Python 2.x
@@ -14,33 +14,10 @@ PRE-REQUISITES:
    3.  Go to dev.elbrys.com and follow the directions there
 
 
-TRY IT OUT WHILE IT IS RUNNING: 
-   1.  Connect a user device (laptop, phone, tablet, etc.) to your switch 
-   2.  On the user device, if you are not redirected automatically, open your web browser, browse to a non https url (www.amazon.com).
-       You will be redirected to www.elbrys.com.  You should be able to browse to www.elbrys.com
-       (this is because the IP address of www.elbrys.com is whitelisted)
- 
 Mail bug reports and suggestion to : support@elbrys.com
 """
 
-# =================================================================
-# Example execution:
-
-# python ./app1.py --user myusername --password mypassword --switch ccfa00b07b95 --unauthwait 120
-# EXAMPLE application #1 
-# Version: 1.0
-# Creating application...
-# ...application created with id:1412228378082
-# Creating unauthenticated policy as default...
-# ...unauthenticated policy created with id:1412228378083
-# Waiting 120 seconds for you to associate an endpoint and try default policy. Open browser try to go to a url...
-# ...done waiting.
-# Deleting application...
-# ...application deleted.
-# ====================================================================
- 
-import getopt, sys, os, errno  
-import getpass    
+import sys, os, errno  
 import requests
 import json
 import time
@@ -74,7 +51,7 @@ def CreateApp(authToken, switch, parser):
     # RETURNS: app identifier
     url = odlsBaseUrl + '/applications'
     payload = {'name': 'Example ODL-S app1.py for switch: ' + switch,
-                'scope': {'switchs':[switch]}}
+                'scope': {'vnets':[switch]}}
     headers = {'content-type': 'application/json',
                'Authorization': 'bearer ' + authToken}
     appId = requests.post(url, data=json.dumps(payload), headers=headers)
@@ -94,26 +71,23 @@ def CreateApp(authToken, switch, parser):
     return appId;
 
 
-def CreateUnauthPolicy(authToken, appId,redirectUrl):
-    # This calls the  api to create an unauthenticated
+def CreateAuthPolicy(authToken, appId,redirectUrl):
+    # This calls the  api to create an authenticated
     # policy for the application.  
     # This is the policy that a new endpoint will
     # be given.
     # This policy will:
-    #    - redirect any http requests to redirectUrl 
+    #    - allow any packet to pass
     # RETURNS: app identifier
-    # Now create unauthenticated policy using network resource
+    # Now create authenticated policy using network resource
     url = odlsBaseUrl + '/applications/' + appId + '/policies'
     payload = {
-               'name': 'unauthenticated',
+               'name': 'authenticated',
                'default': True,
                'rules': [
                          {
                           'actions': [
-                                       {
-                                        'type': 'httpRedirect',
-                                        'url': redirectUrl
-                                        }
+                                        {'type': 'pass'}
                                      ]
                          }
                         ]
@@ -121,8 +95,16 @@ def CreateUnauthPolicy(authToken, appId,redirectUrl):
     headers = {'content-type': 'application/json',
                'Authorization': 'bearer ' + authToken}
     policyId = requests.post(url, data=json.dumps(payload), headers=headers)
-    policyId = policyId.json()
-    policyId = policyId['id']
+    status = policyId.status_code
+    if ((status >= 200) & (status <=299)):
+        policyId = policyId.json()
+        policyId = policyId['id']
+    else:
+        print " "
+        print "!! Error !!"  
+        print "    Unable to create authenticated policy."
+        sys.exit()
+
     return policyId;
 
 
@@ -138,12 +120,10 @@ def DeleteApp(authToken, appId):
 def GetCommandLineParser():
     # This method will process the command line parameters
     parser = argparse.ArgumentParser(description='SDN Application to redirect devices connected to switch to a url.')
-    parser.add_argument('--wait',type=int,default=120,
-        help='the number of seconds the application will pause to allow you to connect end user device to switch to try it out.')
-    parser.add_argument('--user',required=True,
-        help='your ODL-S Account Username.  Go to sdn-developer.elbrys.com, logon, select "My Account" in top right.')
-    parser.add_argument('--password',required=True,
-        help='your ODL-S Account Password. Go to sdn-developer.elbrys.com, logon, select "My Account", select "Edit Account", select the "eyeball" icon next to password.')
+    parser.add_argument('--id',required=True,
+        help='your ODL-S Application id.  Go to sdn-developer.elbrys.com, logon, select "My Account" in top right.')
+    parser.add_argument('--secret',required=True,
+        help='your ODL-S Application secret. Go to sdn-developer.elbrys.com, logon, select "My Account", select "Edit Account", select the "eyeball" icon next to password.')
     parser.add_argument('--switch',required=True,
         help='the Local MAC address for the switch connected in ODL-S dashboard without ":" e.g.  ccfa00b07b95  Go to sdn-developer.elbrys.com, logon, look in "Devices" table')
     return parser
@@ -154,6 +134,7 @@ def main():
     redirectUrl = "http://sdn-app4-staging.elbrys.com/portal/dan/1/"
     print "ODL-S App1"
     print "Version: " + version
+    print "A very simple 'hello world' application that uses ODL-S."
     print __doc__
 
     # --------------------------------
@@ -164,26 +145,30 @@ def main():
     # --------------------------------
     #    Main application
     print "Obtaining authorization token..."
-    authToken = GetAuthToken(args.user,args.password,parser)
+    authToken = GetAuthToken(args.id,args.secret,parser)
     if (authToken):
         print "...authorization token obtained:" + authToken
-        print "Creating application..."
+        print 'Creating application...'
         appId = CreateApp(authToken, args.switch,parser)
         if (appId):
             try:
-                print "...application created with id:" + appId
-                print "Creating unauthenticated policy as default..."
-                unAuthPolicyId = CreateUnauthPolicy(authToken, appId,redirectUrl)
-                print "...unauthenticated policy created with id:" + unAuthPolicyId
-                print "Waiting " + `args.wait` + " seconds for you to associate an endpoint and try default policy. Open browser try to go to a url..."
-                time.sleep(args.wait)
-                print "...done waiting."
+                print "...application created with id:" + appId + ".  Now that an application is connected to your "
+                print "switch traffic of connected user devices will be blocked until a policy is defined."
+                print "Connect a user device (laptop, tablet, phone) to a port on your network device."
+                raw_input("Press Enter when you have connected a user device.")
+                print "From your user device prove to yourself you do NOT have connectivity.  Ping something."
+                raw_input("Press Enter when you have proven your user device is blocked.")
+                print "Creating authenticated policy as default for any device detected..."
+                authPolicyId = CreateAuthPolicy(authToken, appId,redirectUrl)
+                print "...authenticated policy created with id:" + authPolicyId
+                print "From your user device prove to yourself you now DO have connectivity.  Try to ping something."
+                raw_input("Press Enter when you have proven connectivity to yourself.")
             except:
                 print " "
             finally:
                 print "Deleting application..."
                 DeleteApp(authToken, appId)
-                print "...application deleted."
+                print "...application deleted.  Once the application is deleted you will continue to have connectivity."
 
  
 # The BASE url where the ODL-S RESTful api listens
