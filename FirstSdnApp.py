@@ -71,7 +71,7 @@ def CreateApp(authToken, switch, parser):
     return appId;
 
 
-def CreateAuthPolicy(authToken, appId,redirectUrl):
+def CreateUnblockPolicy(authToken, appId):
     # This calls the  api to create an authenticated
     # policy for the application.  
     # This is the policy that a new endpoint will
@@ -82,7 +82,7 @@ def CreateAuthPolicy(authToken, appId,redirectUrl):
     # Now create authenticated policy using network resource
     url = odlsBaseUrl + '/applications/' + appId + '/policies'
     payload = {
-               'name': 'authenticated',
+               'name': 'unblocked',
                'default': True,
                'rules': [
                          {
@@ -94,15 +94,18 @@ def CreateAuthPolicy(authToken, appId,redirectUrl):
               }
     headers = {'content-type': 'application/json',
                'Authorization': 'bearer ' + authToken}
-    policyId = requests.post(url, data=json.dumps(payload), headers=headers)
-    status = policyId.status_code
+
+    r = requests.post(url, data=json.dumps(payload), headers=headers)
+
+    # print "here 5" + r.status_code
+    status = r.status_code
     if ((status >= 200) & (status <=299)):
-        policyId = policyId.json()
+        policyId = r.json()
         policyId = policyId['id']
     else:
         print " "
         print "!! Error !!"  
-        print "    Unable to create authenticated policy."
+        print "    Unable to create unblock policy."
         sys.exit()
 
     return policyId;
@@ -119,7 +122,7 @@ def DeleteApp(authToken, appId):
 
 def GetCommandLineParser():
     # This method will process the command line parameters
-    parser = argparse.ArgumentParser(description='SDN Application to redirect devices connected to switch to a url.')
+    parser = argparse.ArgumentParser(description='Simple SDN Application to block/unblock devices connected to switch.')
     parser.add_argument('--id',required=True,
         help='your ODL-S Application id.  Go to sdn-developer.elbrys.com, logon, select "My Account" in top right.')
     parser.add_argument('--secret',required=True,
@@ -131,7 +134,6 @@ def GetCommandLineParser():
 def main(): 
     # The version of the application
     version="1.0"
-    redirectUrl = "http://sdn-app4-staging.elbrys.com/portal/dan/1/"
     print "ODL-S App1"
     print "Version: " + version
     print "A very simple 'hello world' application that uses ODL-S."
@@ -144,31 +146,43 @@ def main():
 
     # --------------------------------
     #    Main application
+    print " "
     print "Obtaining authorization token..."
     authToken = GetAuthToken(args.id,args.secret,parser)
     if (authToken):
         print "...authorization token obtained:" + authToken
+        print " "
         print 'Creating application...'
         appId = CreateApp(authToken, args.switch,parser)
         if (appId):
             try:
                 print "...application created with id:" + appId + ".  Now that an application is connected to your "
                 print "switch traffic of connected user devices will be blocked until a policy is defined."
-                print "Connect a user device (laptop, tablet, phone) to a port on your network device."
-                raw_input("Press Enter when you have connected a user device.")
-                print "From your user device prove to yourself you do NOT have connectivity.  Ping something."
-                raw_input("Press Enter when you have proven your user device is blocked.")
-                print "Creating authenticated policy as default for any device detected..."
-                authPolicyId = CreateAuthPolicy(authToken, appId,redirectUrl)
-                print "...authenticated policy created with id:" + authPolicyId
-                print "From your user device prove to yourself you now DO have connectivity.  Try to ping something."
-                raw_input("Press Enter when you have proven connectivity to yourself.")
-            except:
                 print " "
+                print "Connect a user device (laptop, tablet, phone) to a port on your network device."
+                print " "
+                raw_input("Press Enter when you have connected a user device.")
+                print " "
+                print "From your user device prove to yourself you do NOT have connectivity.  Ping something."
+                print " "
+                raw_input("Press Enter when you have proven your user device is blocked.")
+                print " "
+                print "Creating unblock policy as default for any device detected..."
+                unblockPolicyId = CreateUnblockPolicy(authToken, appId)
+                print "...unblock policy created with id:" + unblockPolicyId
+                print " "
+                print "From your user device prove to yourself you now DO have connectivity.  Try to ping something."
+                print " "
+                raw_input("Press Enter end this application.")
+            except Exception as inst:
+                print " Exception detected..."
+                print type(inst)     # the exception instance
+                print inst.args      # arguments stored in .args
+                print inst           # __str__ allows args to be printed directly
             finally:
                 print "Deleting application..."
                 DeleteApp(authToken, appId)
-                print "...application deleted.  Once the application is deleted you will continue to have connectivity."
+                print "...application deleted.  Once the application is deleted you will have connectivity once again."
 
  
 # The BASE url where the ODL-S RESTful api listens
