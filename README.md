@@ -36,41 +36,35 @@ A sample SDN application that works with Elbrys' OpenDaylight as a service (ODL-
 
 # Usage
 ```bash
-usage: app1.py [-h] [--wait WAIT] --user USER --password PASSWORD --switch
-               SWITCH
+usage: FirstSdnApp.py [-h] --id ID --secret SECRET --switch SWITCH
 
 SDN Application to redirect devices connected to switch to a url.
 
 optional arguments:
-  -h, --help           show this help message and exit
-  --wait WAIT          the number of seconds the application will pause to
-                       allow you to connect end user device to switch to try
-                       it out.
-  --user USER          your ODL-S Account Username. Go to sdn-
-                       developer.elbrys.com, logon, select "My Account" in top
-                       right.
-  --password PASSWORD  your ODL-S Account Password. Go to sdn-
-                       developer.elbrys.com, logon, select "My Account",
-                       select "Edit Account", select the "eyeball" icon next
-                       to password.
-  --switch SWITCH      the Local MAC address for the switch connected in ODL-S
-                       dashboard without ":" e.g. ccfa00b07b95 Go to sdn-
-                       developer.elbrys.com, logon, look in "Devices" table
+  -h, --help       show this help message and exit
+  --id ID          your ODL-S Application id. Go to sdn-developer.elbrys.com,
+                   logon, select "My Account" in top right.
+  --secret SECRET  your ODL-S Application secret. Go to sdn-
+                   developer.elbrys.com, logon, select "My Account", select
+                   "Edit Account", select the "eyeball" icon next to password.
+  --switch SWITCH  the Local MAC address for the switch connected in ODL-S
+                   dashboard without ":" e.g. ccfa00b07b95 Go to sdn-
+                   developer.elbrys.com, logon, look in "Devices" table
 ```
 
 # Example Execution
 ```bash
- python ./app1.py --user myusername --password mypassword --switch ccfa00b07b95 --wait 120
-
+Jamess-MacBook-Air:FirstSdnApp jeb$ python FirstSdnApp.py --id jebpublic@gmail.com --secret blitz1023 --switch 1
 ODL-S App1
 Version: 1.0
+A very simple 'hello world' application that uses ODL-S.
 
 DESCRIPTION:
-    This is an example Python application that demonstrates how to use Elbrys ODL as a service - ODL-S (dev.elbrys.com) to
+    This is an extremely simple Python application that demonstrates how to use Elbrys ODL as a service - ODL-S (dev.elbrys.com) to
     control endpoint user sessions access to the network.
 
     This application will connect to one of the switches that you have connected in the ODL-S portal (sdn-developer.elbrys.com)
-    and redirect all endpoints that connect to the switch to a specific url.
+    and demonstrate blocking and unblocking of network traffic for any device connected to the switch. 
 
 PRE-REQUISITES:
    1.  Python 2.x
@@ -79,23 +73,22 @@ PRE-REQUISITES:
    3.  Go to dev.elbrys.com and follow the directions there
 
 
-TRY IT OUT WHILE IT IS RUNNING: 
-   1.  Connect a user device (laptop, phone, tablet, etc.) to your switch 
-   2.  On the user device, if you are not redirected automatically, open your web browser, browse to a non https url (www.amazon.com).
-       You will be redirected to www.elbrys.com.  You should be able to browse to www.elbrys.com
-       (this is because the IP address of www.elbrys.com is whitelisted)
- 
 Mail bug reports and suggestion to : support@elbrys.com
 
 Obtaining authorization token...
-...authorization token obtained:eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzM5NzU3ODEsInN1YiI6IjZmN2Y0NjZlLTZhNDItNGMxMy1iOGFjLTQzMzJlOTljOGZiNiIsImlzcyI6IkFQRSIsInRnZW4iOjEsImlhdCI6MTQzMzg4OTM4MX0.mvjrOCovnY5NMF0Lq9aGY8ZKNT6W_nFWNRru6SieUBI
+...authorization token obtained:eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzQzMDc1OTYsInN1YiI6IjE3OTNiMmJmLTI3ZDEtNDhlZS1iYWQzLTY1NzczZDM0NTY1OCIsImlzcyI6IkFQRSIsInRnZW4iOjEsImlhdCI6MTQzNDIyMTE5Nn0.6GK7tHuFg_qJixyp216GITpcgK6ajCjaUMoIQ4JYm1s
 Creating application...
-...application created with id:1412228378082
-Creating unauthenticated policy as default...
-...unauthenticated policy created with id:1412228378083
-Waiting 120 seconds for you to associate an endpoint and try default policy. Open browser try to go to a url...
-...done waiting.
+...application created with id:1434165607930.  Now that an application is connected to your 
+switch traffic of connected user devices will be blocked until a policy is defined.
+Connect a user device (laptop, tablet, phone) to a port on your network device.
+Press Enter when you have connected a user device.
+From your user device prove to yourself you do NOT have connectivity.  Ping something.
+Press Enter when you have proven your user device is blocked.
+Creating authenticated policy as default for any device detected...
+...authenticated policy created with id:1434165607931
+From your user device prove to yourself you now DO have connectivity.  Try to ping something.
+Press Enter when you have proven connectivity to yourself.
 Deleting application...
-...application deleted.
+...application deleted.  Once the application is deleted you will continue to have connectivity.
 ```
 
