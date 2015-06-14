@@ -128,7 +128,7 @@ def GetCommandLineParser():
     parser.add_argument('--secret',required=True,
         help='your ODL-S Application secret. Go to sdn-developer.elbrys.com, logon, select "My Account", select "Edit Account", select the "eyeball" icon next to password.')
     parser.add_argument('--switch',required=True,
-        help='the Local MAC address for the switch connected in ODL-S dashboard without ":" e.g.  ccfa00b07b95  Go to sdn-developer.elbrys.com, logon, look in "Devices" table')
+        help='the Datapath Id (DPID) for the switch connected in ODL-S dashboard without ":" e.g.  ccfa00b07b95  Go to sdn-developer.elbrys.com, logon, look in "Devices" table')
     return parser
  
 def main(): 
