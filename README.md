@@ -54,6 +54,13 @@ optional arguments:
                    developer.elbrys.com, logon, look in "Devices" table
 ```
 
+# Other Example Applications
+There is a Github repository for ODL-S sample applications.  If you clone this repository you will 
+have a number of sample applications showing how to program ODL-S.
+   * https://github.com/Elbrys/ODL-S-Sample-Apps
+
+
+
 # Example Execution
 ```bash
 Jamess-MacBook-Air:FirstSdnApp jeb$ python FirstSdnApp.py --id myappid --secret myappsecret  --switch 1
