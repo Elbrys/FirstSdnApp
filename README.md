@@ -1,5 +1,5 @@
 # FirstSdnApp
-A sample SDN application that works with Elbrys' OpenDaylight as a service (ODL-S).
+A sample SDN application that works with Elbrys' OpenDaylight as a service (ODL-S).  See http://dev.elbrys.com.
 
 # Current Version
 1.0.0
