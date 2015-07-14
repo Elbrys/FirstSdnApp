@@ -45,10 +45,11 @@ SDN Application to redirect devices connected to switch to a url.
 optional arguments:
   -h, --help       show this help message and exit
   --id ID          your ODL-S Application id. Go to sdn-developer.elbrys.com,
-                   logon, select "My Account" in top right.
+                   logon and then in the header of the
+                   applications table find your application id.
   --secret SECRET  your ODL-S Application secret. Go to sdn-
-                   developer.elbrys.com, logon, select "My Account", select
-                   "Edit Account", select the "eyeball" icon next to password.
+                   developer.elbrys.com, logon and then in the header of the
+                   applications table select the "eyeball" icon next to password.
   --switch SWITCH  the Local MAC address for the switch connected in ODL-S
                    dashboard without ":" e.g. ccfa00b07b95 Go to sdn-
                    developer.elbrys.com, logon, look in "Devices" table
