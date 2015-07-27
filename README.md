@@ -39,20 +39,29 @@ A sample SDN application that works with Elbrys' OpenDaylight as a service (ODL-
 # Usage
 ```bash
 usage: FirstSdnApp.py [-h] --id ID --secret SECRET --switch SWITCH
+                      [--server SERVER] [--port PORT]
 
-SDN Application to redirect devices connected to switch to a url.
+Simple SDN Application to block/unblock devices connected to switch.
 
 optional arguments:
   -h, --help       show this help message and exit
   --id ID          your ODL-S Application id. Go to sdn-developer.elbrys.com,
-                   logon and then in the header of the
-                   applications table find your application id.
+                   logon, select "My Account" in top right.
   --secret SECRET  your ODL-S Application secret. Go to sdn-
-                   developer.elbrys.com, logon and then in the header of the
-                   applications table select the "eyeball" icon next to password.
-  --switch SWITCH  the Local MAC address for the switch connected in ODL-S
+                   developer.elbrys.com, logon, select "My Account", select
+                   "Edit Account", select the "eyeball" icon next to password.
+  --switch SWITCH  the Datapath Id (DPID) for the switch connected in ODL-S
                    dashboard without ":" e.g. ccfa00b07b95 Go to sdn-
                    developer.elbrys.com, logon, look in "Devices" table
+  --server SERVER  The IP address of your ODL-S server. Go to sdn-
+                   developer.elbrys.com, logon, look at "Controller" table.
+  --port PORT      The TCP port number of your ODL-S server. Go to sdn-
+                   developer.elbrys.com, logon, look at "Controller" table.
+```
+
+# Example Command Line
+```
+python FirstSdnApp.py --id Ra8beAb --secret H5tuNnQe --switch 5001871fc0  --server 1.2.3.4 --port 5678
 ```
 
 # Other Example Applications
@@ -60,45 +69,4 @@ There is a Github repository for ODL-S sample applications.  If you clone this r
 have a number of sample applications showing how to program ODL-S.
    * https://github.com/Elbrys/ODL-S-Sample-Apps
 
-
-
-# Example Execution
-```bash
-Jamess-MacBook-Air:FirstSdnApp jeb$ python FirstSdnApp.py --id myappid --secret myappsecret  --switch 1
-ODL-S App1
-Version: 1.0
-A very simple 'hello world' application that uses ODL-S.
-
-DESCRIPTION:
-    This is an extremely simple Python application that demonstrates how to use Elbrys ODL as a service - ODL-S (dev.elbrys.com) to
-    control endpoint user sessions access to the network.
-
-    This application will connect to one of the switches that you have connected in the ODL-S portal (sdn-developer.elbrys.com)
-    and demonstrate blocking and unblocking of network traffic for any device connected to the switch. 
-
-PRE-REQUISITES:
-   1.  Python 2.x
-   2.  Install python-requests:
-        a.  sudo easy_install requests
-   3.  Go to dev.elbrys.com and follow the directions there
-
-
-Mail bug reports and suggestion to : support@elbrys.com
-
-Obtaining authorization token...
-...authorization token obtained:eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0MzQzMDc1OTYsInN1YiI6IjE3OTNiMmJmLTI3ZDEtNDhlZS1iYWQzLTY1NzczZDM0NTY1OCIsImlzcyI6IkFQRSIsInRnZW4iOjEsImlhdCI6MTQzNDIyMTE5Nn0.6GK7tHuFg_qJixyp216GITpcgK6ajCjaUMoIQ4JYm1s
-Creating application...
-...application created with id:1434165607930.  Now that an application is connected to your 
-switch traffic of connected user devices will be blocked until a policy is defined.
-Connect a user device (laptop, tablet, phone) to a port on your network device.
-Press Enter when you have connected a user device.
-From your user device prove to yourself you do NOT have connectivity.  Ping something.
-Press Enter when you have proven your user device is blocked.
-Creating authenticated policy as default for any device detected...
-...authenticated policy created with id:1434165607931
-From your user device prove to yourself you now DO have connectivity.  Try to ping something.
-Press Enter when you have proven connectivity to yourself.
-Deleting application...
-...application deleted.  Once the application is deleted you will continue to have connectivity.
-```
 
