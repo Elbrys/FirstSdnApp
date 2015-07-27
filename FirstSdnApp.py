@@ -25,6 +25,7 @@ import argparse
 from requests.auth import HTTPBasicAuth
  
 def GetAuthToken(user, password, parser):
+    global odlsBaseUrl
     # This calls the  api to create an authorization token to make other calls
     # RETURNS: authorization token
     url = odlsBaseUrl + '/auth/token'
@@ -48,6 +49,7 @@ def GetAuthToken(user, password, parser):
 
 
 def GetApps(authToken):
+    global odlsBaseUrl
     url = odlsBaseUrl + '/applications'
     headers = {'content-type': 'application/json',
                'Authorization': 'bearer ' + authToken}
@@ -59,6 +61,7 @@ def GetApps(authToken):
         return r
 
 def GetAppInfo(authToken, appId):
+    global odlsBaseUrl
     url = odlsBaseUrl + '/applications/' + appId
     headers = {'content-type': 'application/json',
                'Authorization': 'bearer ' + authToken}
@@ -87,6 +90,7 @@ def RemoveZombieApps(authToken, switch):
 
 
 def CreateApp(authToken, switch, parser):
+    global odlsBaseUrl
     # This calls the  api to create an application
     # RETURNS: app identifier
     RemoveZombieApps(authToken, switch)
@@ -114,6 +118,7 @@ def CreateApp(authToken, switch, parser):
 
 
 def CreateUnblockPolicy(authToken, appId):
+    global odlsBaseUrl
     # This calls the  api to create an authenticated
     # policy for the application.  
     # This is the policy that a new endpoint will
@@ -154,6 +159,7 @@ def CreateUnblockPolicy(authToken, appId):
 
 
 def DeleteApp(authToken, appId):
+    global odlsBaseUrl
     # This calls the  api to delete an application
     # RETURNS: app identifier
     url = odlsBaseUrl + '/applications/' + appId
@@ -171,11 +177,18 @@ def GetCommandLineParser():
         help='your ODL-S Application secret. Go to sdn-developer.elbrys.com, logon, select "My Account", select "Edit Account", select the "eyeball" icon next to password.')
     parser.add_argument('--switch',required=True,
         help='the Datapath Id (DPID) for the switch connected in ODL-S dashboard without ":" e.g.  ccfa00b07b95  Go to sdn-developer.elbrys.com, logon, look in "Devices" table')
+    parser.add_argument('--server',required=False, default="54.85.212.52",
+        help='The IP address of your ODL-S server.  Go to sdn-developer.elbrys.com, logon, look at "Controller" table.')
+    parser.add_argument('--port',required=False, default="8080",
+        help='The TCP port number of your ODL-S server.  Go to sdn-developer.elbrys.com, logon, look at "Controller" table.')
     return parser
  
 def main(): 
+    global odlsBaseUrl
     # The version of the application
-    version="1.0"
+    # 1.0 - initial version
+    # 1.1 - added code to remove apps for selected vnet before creating new app
+    version="1.1"
     print "ODL-S App1 (FirstSdnApp)"
     print "Version: " + version
     print "A very simple 'hello world' application that uses ODL-S."
@@ -185,6 +198,10 @@ def main():
     #    Command Line Processing
     parser=GetCommandLineParser()
     args = parser.parse_args()
+
+
+    odlsBaseUrl = "http://"+args.server+":"+args.port+"/ape/v1"
+    print "ODL-S API is at: " + odlsBaseUrl
 
     # --------------------------------
     #    Main application
