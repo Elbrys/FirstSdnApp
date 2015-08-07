@@ -10,14 +10,14 @@ import argparse
 import random
 import re
 
-def myNetwork(d):
+def myNetwork(d,server,port):
 
     net = Mininet( topo=None,
                    build=False)
 
     info( '*** Adding controller\n' )
     #net.addController(name='c0')
-    c1=net.addController(name='c0', controller=RemoteController, ip='54.85.212.52', port=6634)
+    c1=net.addController(name='c0', controller=RemoteController, ip=server, port=port)
 
     info( '*** Add switches\n')
     s1 = net.addSwitch('s1', cls=OVSKernelSwitch, dpid=d)
@@ -49,6 +49,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Simple Mininet application to create and connect Mininet switch to ODL-S.')
     parser.add_argument('--id',required=True,
         help='your ODL-S Application id.  Go to sdn-developer.elbrys.com, logon, select "My Account" in top right.')
+    parser.add_argument('--server',required=True,
+        help='The IP address of your ODL-S server.  Go to sdn-developer.elbrys.com, logon, look at "Controller" table.')
+    parser.add_argument('--port',required=True,
+        help='The TCP port number of your ODL-S server.  Go to sdn-developer.elbrys.com, logon, look at "Controller" table.')
     args = parser.parse_args()
     random.seed(args.id)
     r = random.randrange(0x111111111111,0xffffffffffff)
@@ -56,4 +60,4 @@ if __name__ == '__main__':
     d = format(r, 'x')
     d = str(d)
     
-    myNetwork(d)
+    myNetwork(d, args.server, args.port)
