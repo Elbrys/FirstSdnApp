@@ -35,13 +35,11 @@ def myNetwork(d, server, port):
     net.start()
     h1.cmdPrint('dhclient ' + h1.defaultIntf().name)
     print " "
-    print "If your application is using OpenDaylight RESTCONF api then\
-           you are ready to go.  Go write your app.\
-           \n\n\
-           If your application will use the Elbrys OpenNAC API then \
-           this is the data for adding the mininet switch to the \
-           list of network devices in the ODL-S dashboard \
-           (sdn-developer.elbrys.com):"
+    print "If your application is using OpenDaylight RESTCONF api then \
+you are ready to go.  Go write your app.\n\n\
+If your application will use the Elbrys OpenNAC API then \
+this is the data for adding the mininet switch to the list of network \
+devices in the ODL-S dashboard (sdn-developer.elbrys.com):"
     print "    Local MAC: " + re.sub("(.{2})", "\\1:", d, 5, re.DOTALL)
     ip = s1.cmd('ifconfig eth0 | grep \'inet addr\' | cut -d: -f2\
                  | awk \'{print $1}\'')
