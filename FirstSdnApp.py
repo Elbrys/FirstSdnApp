@@ -192,14 +192,12 @@ def GetCommandLineParser():
                               ccfa00b07b95  Go to sdn-developer.elbrys.com, \
                               logon, look in "Devices" table')
     parser.add_argument('--server',
-                        required=False,
-                        default="54.85.212.52",
+                        required=True,
                         help='The IP address of your ODL-S server.  Go to \
                               sdn-developer.elbrys.com, logon, look at \
                               "Controller" table.')
     parser.add_argument('--port',
-                        required=False,
-                        default="8080",
+                        required=True,
                         help='The TCP port number of your ODL-S server.  \
                               Go to sdn-developer.elbrys.com, logon, look at \
                               "Controller" table.')
