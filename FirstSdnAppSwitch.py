@@ -80,4 +80,4 @@ if __name__ == '__main__':
     d = str(d)
 
     # Create the network of switches and endpoints
-    myNetwork(d, args.server, args.port)
+    myNetwork(d, args.server, int(args.port))
