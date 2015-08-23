@@ -1,11 +1,12 @@
 #!/usr/bin/python
 
 from mininet.net import Mininet
-from mininet.node import Controller, RemoteController, OVSController
+# from mininet.node import Controller, RemoteController, OVSController
 from mininet.cli import CLI
 from mininet.link import Intf
 from mininet.log import setLogLevel, info
-from mininet.node import OVSKernelSwitch, UserSwitch
+from mininet.node import OVSKernelSwitch, RemoteController
+# from mininet.node import UserSwitch
 import argparse
 import random
 import re
@@ -17,8 +18,8 @@ def myNetwork(d, server, port):
                   build=False)
 
     info('*** Adding controller\n')
-    # net.addController(name='c0')
-    c1 = net.addController(name='c0', controller=RemoteController, ip=server, port=port)
+    net.addController(name='c0', controller=RemoteController, ip=server,
+                           port=port)
 
     info('*** Add switches\n')
     s1 = net.addSwitch('s1', cls=OVSKernelSwitch, dpid=d)
@@ -34,9 +35,11 @@ def myNetwork(d, server, port):
     net.start()
     h1.cmdPrint('dhclient '+h1.defaultIntf().name)
     print " "
-    print "Data for adding device to ODL-S dashboard (sdn-developer.elbrys.com):"
+    print "Data for adding device to ODL-S dashboard (sdn-developer.elbrys.\
+           com):"
     print "    Local MAC: " + re.sub("(.{2})", "\\1:", d, 5, re.DOTALL)
-    ip = s1.cmd('ifconfig eth0 | grep \'inet addr\' | cut -d: -f2 | awk \'{print $1}\'')
+    ip = s1.cmd('ifconfig eth0 | grep \'inet addr\' | cut -d: -f2\
+                 | awk \'{print $1}\'')
     print "    Local IPv4 Address: " + ip
     print "    Datapath id (dpid): " + d
     print " "
