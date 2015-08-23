@@ -33,7 +33,7 @@ def myNetwork(d, server, port):
 
     info('*** Starting network\n')
     net.start()
-    h1.cmdPrint('dhclient '+h1.defaultIntf().name)
+    h1.cmdPrint('dhclient ' + h1.defaultIntf().name)
     print " "
     print "Data for adding device to ODL-S dashboard (sdn-developer.elbrys.\
            com):"

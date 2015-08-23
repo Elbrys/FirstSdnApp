@@ -33,7 +33,7 @@ def GetAuthToken(user, password, parser):
     # RETURNS: authorization token
     url = odlsBaseUrl + '/auth/token'
     headers = {'content-type': 'application/json'}
-    user = "name="+user
+    user = "name=" + user
     appId = requests.get(url, headers=headers, auth=HTTPBasicAuth(user,
                          password))
     status = appId.status_code
@@ -222,7 +222,7 @@ def main():
     parser = GetCommandLineParser()
     args = parser.parse_args()
 
-    odlsBaseUrl = "http://"+args.server+":"+args.port+"/ape/v1"
+    odlsBaseUrl = "http://" + args.server + ":" + args.port + "/ape/v1"
     print "ODL-S API is at: " + odlsBaseUrl
 
     # --------------------------------
