@@ -122,9 +122,15 @@ optional arguments:
 python FirstSdnApp.py --id Ra8beAb --secret H5tuNnQe --switch 5001871fc0  --server 1.2.3.4 --port 5678
 ```
 
-# Other Example Applications
-There is a Github repository for ODL-S sample applications.  If you clone this repository you will 
-have a number of sample applications showing how to program ODL-S.
+# Other Example Applications - OpenNAC API
+There is a Github repository for sample applications that use Elbrys' OpenNAC API.  If you clone this repository you will 
+have a number of sample applications showing how to program ODL-S via the OpenNAC API.
    * https://github.com/Elbrys/ODL-S-Sample-Apps
+
+# Other Example Applications - RESTCONF API
+There is a Github repository for sample applications that use ODL RESTCONF API.  
+These sample applications depend on a python library called pybvc.
+   * Learn how to install the pybvc library here:  https://github.com/Brcdcomm/pybvc
+   * Learn how to install the pybvcsampls (sample apps) here:  https://github.com/Brcdcomm/pybvcsamples
 
 
