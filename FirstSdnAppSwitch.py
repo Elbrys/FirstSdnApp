@@ -44,7 +44,7 @@ devices in the ODL-S dashboard (sdn-developer.elbrys.com):"
     ip = s1.cmd('ifconfig eth0 | grep \'inet addr\' | cut -d: -f2\
                  | awk \'{print $1}\'')
     print "    Local IPv4 Address: " + ip
-    print "    Datapath id (dpid): " + d
+    print "    Datapath id (dpid): " + d + " (decimal: " + int(d) + ")"
     print " "
     CLI(net)
     net.stop()
