@@ -211,14 +211,15 @@ def AddFlows(rConfBaseUrl, user, password, switchId, flowId, hostMac):
                'accept': 'application/json'}
 
     payload = '{"flow": \
-    {"id":"'+str(flowId)+'",\
+    {"id":"' + str(flowId) + '",\
      "instructions": {"instruction": [\
           {"order": 0,"apply-actions": {"action": [\
                                         {"order": 0,"output-action": \
                                         {"max-length": 65535,\
                                         "output-node-connector": "FLOOD"\
                                         }}]}}]},\
-      "match": {"ethernet-match": {"ethernet-source": {"address": "'+hostMac+'"}}},\
+      "match": {"ethernet-match": {"ethernet-source": \
+      {"address": "' + hostMac + '"}}},\
       "priority": 100,"table_id": 0,"hard-timeout": 0,"idle-timeout": 0} }'
 
     r = requests.put(url, data=payload, headers=headers,
@@ -227,9 +228,9 @@ def AddFlows(rConfBaseUrl, user, password, switchId, flowId, hostMac):
 
     flowId = flowId + 1
     url = rConfBaseUrl + '/config/opendaylight-inventory:nodes/node/' \
-        + switchId+'/table/0/flow/' + str(flowId)
+        + switchId + '/table/0/flow/' + str(flowId)
     payload = '{"flow": \
-    {"id":"'+str(flowId)+'",\
+    {"id":"' + str(flowId) + '",\
      "instructions": {"instruction": [\
           {"order": 0,"apply-actions": {"action": [\
                                         {"order": 0,"output-action": \
