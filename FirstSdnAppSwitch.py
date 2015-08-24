@@ -45,7 +45,7 @@ devices in the ODL-S dashboard (sdn-developer.elbrys.com):"
                  | awk \'{print $1}\'')
     print "    Local IPv4 Address: " + ip
     dpidAsInt = int(d, 16)
-    print "    Datapath id (dpid): " + d + " (decimal: " + dpidAsInt + ")"
+    print "    Datapath id (dpid): " + d + " (decimal: " + str(dpidAsInt) + ")"
     print " "
     CLI(net)
     net.stop()
