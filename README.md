@@ -1,8 +1,15 @@
 # FirstSdnApp
-A sample SDN application that works with Elbrys' OpenDaylight as a service (ODL-S).  See http://dev.elbrys.com.
+Two sample SDN applications that work with Elbrys' OpenDaylight as a service (ODL-S).  See http://dev.elbrys.com.
+
+One application, FirstSdnApp, uses Elbrys' OpenNAC api. A high-level api for controlling policy for endpoints connecting to your network.
+
+The other application, FirstRestconfApp, uses the RESTCONF api of ODL-S to get the network topology.
+
+Another application, FirstSdnAppSwitch, should be run on a Mininet VM.  It will create a Mininet switch and connect it to your ODL-S instance.  Run this before running FirstSdnApp or FirstRestconfApp.
+
 
 # Current Version
-1.0.0
+1.0.1
 
 # Prerequisites
    - A free account on Elbrys ODL-S 
@@ -36,27 +43,74 @@ A sample SDN application that works with Elbrys' OpenDaylight as a service (ODL-
    - Requests Python library
       - pip install requests
 
-# Usage
+# FirstSdnApp.py Usage
+
+You can run FirstSdnApp.py with -h flag to get its usage.
+
 ```bash
-usage: FirstSdnApp.py [-h] --id ID --secret SECRET --switch SWITCH
-                      [--server SERVER] [--port PORT]
+usage: FirstSdnApp.py [-h] --id ID --secret SECRET --server SERVER --port PORT
+                      --switch SWITCH
 
 Simple SDN Application to block/unblock devices connected to switch.
 
 optional arguments:
   -h, --help       show this help message and exit
-  --id ID          your ODL-S Application id. Go to sdn-developer.elbrys.com,
+  --id ID          your ODL-S Application id. Go to sdn-developer. elbrys.com,
                    logon, select "My Account" in top right.
   --secret SECRET  your ODL-S Application secret. Go to sdn-
                    developer.elbrys.com, logon, select "My Account", select
                    "Edit Account", select the "eyeball" icon next to password.
+  --server SERVER  The IP address of your ODL-S server. Go to sdn-
+                   developer.elbrys.com, logon, look at "Controller" table.
+  --port PORT      The TCP REST API port number of your ODL-S server. Go to
+                   sdn-developer.elbrys.com, logon, look at "Controller" table
+                   for REST API Port.
   --switch SWITCH  the Datapath Id (DPID) for the switch connected in ODL-S
                    dashboard without ":" e.g. ccfa00b07b95 Go to sdn-
                    developer.elbrys.com, logon, look in "Devices" table
+```
+
+# FirstRestconfApp.py Usage
+
+You can run FirstRestconfApp.py with -h flag to get its usage.
+
+```bash
+usage: FirstRestconfApp.py [-h] --id ID --secret SECRET --server SERVER --port
+                           PORT
+
+Simple SDN Application to block/unblock devices connected to switch.
+
+optional arguments:
+  -h, --help       show this help message and exit
+  --id ID          your ODL-S Application id. Go to sdn-developer. elbrys.com,
+                   logon, select "My Account" in top right.
+  --secret SECRET  your ODL-S Application secret. Go to sdn-
+                   developer.elbrys.com, logon, select "My Account", select
+                   "Edit Account", select the "eyeball" icon next to password.
+  --server SERVER  The IP address of your ODL-S server. Go to sdn-
+                   developer.elbrys.com, logon, look at "Controller" table.
+  --port PORT      The TCP REST API port number of your ODL-S server. Go to
+                   sdn-developer.elbrys.com, logon, look at "Controller" table
+                   for REST API Port.
+```
+
+# FirstSdnAppSwitch.py Usage
+
+You can run FirstSdnAppSwitch.py with -h flag to get its usage.
+
+```bash
+usage: FirstSdnAppSwitch.py [-h] --id ID --server SERVER --port PORT
+
+Simple Mininet application to create and connect Mininet switch to ODL-S.
+
+optional arguments:
+  -h, --help       show this help message and exit
+  --id ID          your ODL-S Application id. Go to sdn-developer. elbrys.com,
+                   logon, select "My Account" in top right.
   --server SERVER  The IP address of your ODL-S server. Go to sdn-
                    developer.elbrys.com, logon, look at "Controller" table.
   --port PORT      The TCP port number of your ODL-S server. Go to sdn-
-                   developer.elbrys.com, logon, look at "Controller" table.
+                   developer. elbrys.com, logon, look at "Controller" table.
 ```
 
 # Example Command Line
