@@ -97,6 +97,8 @@ optional arguments:
 
 # FirstSdnAppSwitch.py Usage
 
+This must be run on a (virtual) machine running Mininet.
+It will create a virtual switch with one host (endpoint).  It will connect the switch to your running instance of ODL-S.
 You can run FirstSdnAppSwitch.py with -h flag to get its usage.
 
 ```bash
