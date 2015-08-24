@@ -16,6 +16,7 @@ Another application, FirstSdnAppSwitch, should be run on a Mininet VM.  It will 
        - Go to http://sdn-developer.elbrys.com and sign-up (or logon with your github account)
    - An OpenFlow switch connected to it (virtual (Mininet) switch will work)
        - Go to https://github.com/Elbrys/ODL-S/wiki/Connect-Network-Device and follow the instructions there
+       - You can use instructions for Mininet and then use the FirstSdnAppSwitch.py found in this repository to create the switch for you.
    - Python 2.7.x: 
        - Test if your system already has it
 
