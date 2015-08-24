@@ -66,9 +66,10 @@ if __name__ == '__main__':
                               "Controller" table.')
     parser.add_argument('--port',
                         required=True,
-                        help='The TCP port number of your ODL-S server.\
-                              Go to sdn-developer.\
-                              elbrys.com, logon, look at "Controller" table.')
+                        help='The TCP OpenFlow API port number of your ODL-S \
+                          server. Go to sdn-developer.elbrys.com, \
+                          logon, look at "Controller" table for \
+                          OpenFlow Port.')
     args = parser.parse_args()
 
     # Create a random dpid that is constant based on input args
