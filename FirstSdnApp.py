@@ -43,8 +43,8 @@ def GetAuthToken(user, password, parser):
     else:
         print " "
         print "!! Error !!"
-        print "    Unable to create authorization token.  Double check that\
-                   the username and password you entered."
+        print "    Unable to create authorization token.  Double check \
+the id and secret you entered."
         print "    See usage below:"
         parser.print_help()
         sys.exit()
@@ -170,159 +170,64 @@ def DeleteApp(authToken, appId):
     requests.delete(url, headers=headers)
 
 
-def RConfGetTopology(rConfBaseUrl, user, password):
-    # This calls the RESTConf api to retrieve the topology
-    # INPUT:
-    #    rConfBaseUrl - base url at which RestConf calls may be
-    #           made - example:  http://192.168.56.101:8181/restconf
-    #    user - the user name with which to authenticate - example: admin
-    #    password - the password with which to authenticate - example - admin
-    # RETURNS: topology as JSON
-    url = rConfBaseUrl + '/operational/network-topology:network-topology/'
-
-    headers = {'content-type': 'application/json',
-               'accept': 'application/json'}
-    r = requests.get(url, headers=headers, auth=HTTPBasicAuth(user, password))
-    topo = r.json()
-    return topo
-
-
-def AddFlows(rConfBaseUrl, user, password, switchId, flowId, hostMac):
-    # Adds two (2) flows with flowId and flowId+1 to switch switchId that
-    # has priority of 100
-    # that will flood all  packets from or to host with hostMac
-    # INPUT:
-    #    rConfBaseUrl - base url at which RestConf calls may be
-    #    made - example:  http://192.168.56.101:8181/restconf
-    #    user - the user name with which to authenticate - example: admin
-    #    password - the password with which to authenticate - example - admin
-    #    switchId - the id of the switch on which to program the flow.
-    #    This is from topology. - example - openflow:1
-    #    flowId - the number of the flow to program.  example - 10
-    #    hostMac - the MAC address of the host for which to program
-    #    flows - example - 46:67:3b:09:61:c7
-    # RETURNS: nothing
-    print "Adding flows, switchId " \
-          + switchId + ", flowId: " + str(flowId) + ", hostMac: " + hostMac
-    url = rConfBaseUrl + '/config/opendaylight-inventory:nodes/node/' \
-        + switchId + '/table/0/flow/' + str(flowId)
-
-    headers = {'content-type': 'application/json',
-               'accept': 'application/json'}
-
-    payload = '{"flow": \
-    {"id":"' + str(flowId) + '",\
-     "instructions": {"instruction": [\
-          {"order": 0,"apply-actions": {"action": [\
-                                        {"order": 0,"output-action": \
-                                        {"max-length": 65535,\
-                                        "output-node-connector": "FLOOD"\
-                                        }}]}}]},\
-      "match": {"ethernet-match": {"ethernet-source": \
-      {"address": "' + hostMac + '"}}},\
-      "priority": 100,"table_id": 0,"hard-timeout": 0,"idle-timeout": 0} }'
-
-    r = requests.put(url, data=payload, headers=headers,
-                     auth=HTTPBasicAuth(user, password))
-    print r.text
-
-    flowId = flowId + 1
-    url = rConfBaseUrl + '/config/opendaylight-inventory:nodes/node/' \
-        + switchId + '/table/0/flow/' + str(flowId)
-    payload = '{"flow": \
-    {"id":"' + str(flowId) + '",\
-     "instructions": {"instruction": [\
-          {"order": 0,"apply-actions": {"action": [\
-                                        {"order": 0,"output-action": \
-                                        {"max-length": 65535,\
-                                        "output-node-connector": "FLOOD"\
-                                        }}]}}]},\
-      "match": {"ethernet-match": {"ethernet-destination": \
-      {"address": "' + hostMac + '"}}},\
-      "priority": 100,"table_id": 0,"hard-timeout": 0,"idle-timeout": 0} }'
-
-    r = requests.put(url, data=payload, headers=headers,
-                     auth=HTTPBasicAuth(user, password))
-    print r.text
+def GetCommandLineParser():
+    # This method will process the command line parameters
+    parser = argparse.ArgumentParser(
+        description='Simple SDN Application to block/unblock devices connected\
+                     to switch.')
+    parser.add_argument('--id',
+                        required=True,
+                        help='your ODL-S Application id.  Go to sdn-developer.\
+                        elbrys.com, logon, select "My Account" in top right.')
+    parser.add_argument('--secret',
+                        required=True,
+                        help='your ODL-S Application secret. Go to\
+                              sdn-developer.elbrys.com, logon, select "My\
+                              Account", select "Edit Account", select the\
+                              "eyeball" icon next to password.')
+    parser.add_argument('--server',
+                        required=True,
+                        help='The IP address of your ODL-S server.  Go to \
+                              sdn-developer.elbrys.com, logon, look at \
+                              "Controller" table.')
+    parser.add_argument('--port',
+                        required=True,
+                        help='The TCP REST API port number of your ODL-S \
+                              server. Go to sdn-developer.elbrys.com, \
+                              logon, look at "Controller" table for \
+                              REST API Port.')
+    parser.add_argument('--switch',
+                        required=True,
+                        help='the Datapath Id (DPID) for the switch connected \
+                              in ODL-S dashboard without ":" e.g. \
+                              ccfa00b07b95  Go to sdn-developer.elbrys.com, \
+                              logon, look in "Devices" table')
+    return parser
 
 
-def UpdateForwardingRules(rConfBaseUrl, user, password, topology):
-    # Evaluates the topology and for each switch adds flows for
-    #  each host.  The flows will flood packts to/from the host
-    # INPUT:
-    #    rConfBaseUrl - base url at which RestConf calls may be
-    #    made - example:  http://192.168.56.101:8181/restconf
-    #    user - the user name with which to authenticate - example: admin
-    #    password - the password with which to authenticate - example - admin
-    #    topology - the topology, in JSON, returned from RESTConf get topology
-    # RETURNS: nothing
+def main():
+    global odlsBaseUrl
+    global odlsBaseOpenNacUrl
+    # The version of the application
+    # 1.0 - initial version
+    # 1.1 - added code to remove apps for selected vnet before creating new app
+    version = "1.1.3"
+    print "Elbrys Developer Portal FirstSdnApp"
+    print "Version: " + version
+    print "A very simple that uses Elbrys' Developer Portal."
+    print __doc__
 
-    print "Updating forwarding rules..."
+    # --------------------------------
+    #    Command Line Processing
+    parser = GetCommandLineParser()
+    args = parser.parse_args()
 
-    hosts = []
-    switches = []
+    odlsBaseUrl = "http://" + args.server + ":" + args.port
+    odlsBaseOpenNacUrl = odlsBaseUrl + "/ape/v1"
 
-    if ('network-topology' not in topology):
-        print "....no topology."
-        return
-    else:
-        net = topology['network-topology']
-        net = net['topology']
+    print "Elbrys Developer Portal API is at: " + odlsBaseUrl
+    print "Elbrys Developer Portal OpenNAC API is at: " + odlsBaseOpenNacUrl
 
-        for topo in net:
-            if 'node' in topo:
-                nodes = topo['node']
-                for node in nodes:
-                    node_id = node['node-id']
-                    if 'host:' in node_id:
-                        host = node_id.replace("host:", "", 1)
-                        print "new host: " + host
-                        hosts.append(host)
-                    else:
-                        switch = node_id
-                        print "new switch: " + switch
-                        switches.append(switch)
-    flowId = 10
-    for host in hosts:
-        for switch in switches:
-            AddFlows(rConfBaseUrl, user, password, switch, flowId, host)
-        flowId = flowId + 5
-
-
-def PrintTopology(topology):
-    # Prints out provided topology.  It is indented 12 spaces.
-    # INPUT:
-    #    topology - the topology, in JSON, returned from RESTConf get topology
-    # RETURNS: nothing
-
-    print "            ======================================================"
-    print "            Topology"
-    print "            ======================================================"
-
-    if ('network-topology' not in topology):
-        print "            No toplogy."
-    else:
-        net = topology['network-topology']
-        net = net['topology']
-
-        for topo in net:
-            topo_id = topo['topology-id']
-            print "            Network: " + topo_id
-            if 'node' in topo:
-                nodes = topo['node']
-                for node in nodes:
-                    node_id = node['node-id']
-                    print "                Node: " + node_id
-                    if 'termination-point' in node:
-                        ports = node['termination-point']
-                        for port in ports:
-                            port_id = port['tp-id']
-                            print "                    Port: " + port_id
-
-    print "            ======================================================"
-
-
-def opennac_main(args, parser):
     print " "
     print "Obtaining authorization token..."
     authToken = GetAuthToken(args.id, args.secret, parser)
@@ -376,90 +281,9 @@ to have connectivity. \n If you go to your ODL-S dashboard \
 (sdn-developer.elbrys.com) and refresh the screen you will \
 no longer see this application listed."
 
-
-def restconf_main(args):
-    global odlsBaseRestConfUrl
-    topology = RConfGetTopology(odlsBaseRestConfUrl, args.id, args.secret)
-    UpdateForwardingRules(odlsBaseRestConfUrl, args.id, args.secret, topology)
-    print "    Initial Topology: "
-    PrintTopology(topology)
-
-
-def GetCommandLineParser():
-    # This method will process the command line parameters
-    parser = argparse.ArgumentParser(
-        description='Simple SDN Application to block/unblock devices connected\
-                     to switch.')
-    parser.add_argument('--id',
-                        required=True,
-                        help='your ODL-S Application id.  Go to sdn-developer.\
-                        elbrys.com, logon, select "My Account" in top right.')
-    parser.add_argument('--secret',
-                        required=True,
-                        help='your ODL-S Application secret. Go to\
-                              sdn-developer.elbrys.com, logon, select "My\
-                              Account", select "Edit Account", select the\
-                              "eyeball" icon next to password.')
-    parser.add_argument('--switch',
-                        required=True,
-                        help='the Datapath Id (DPID) for the switch connected \
-                              in ODL-S dashboard without ":" e.g. \
-                              ccfa00b07b95  Go to sdn-developer.elbrys.com, \
-                              logon, look in "Devices" table')
-    parser.add_argument('--server',
-                        required=True,
-                        help='The IP address of your ODL-S server.  Go to \
-                              sdn-developer.elbrys.com, logon, look at \
-                              "Controller" table.')
-    parser.add_argument('--port',
-                        required=True,
-                        help='The TCP port number of your ODL-S server.  \
-                              Go to sdn-developer.elbrys.com, logon, look at \
-                              "Controller" table.')
-    parser.add_argument('--api',
-                        required=True,
-                        help='The controller northbound api you want to \
-                              test. \n\n \
-                              restconf - OpenDaylight RESTCONF api. \n \
-                              opennac - Elbrys OpenNac api.')
-    return parser
-
-
-def main():
-    global odlsBaseUrl
-    global odlsBaseOpenNacUrl
-    global odlsBaseRestConfUrl
-    # The version of the application
-    # 1.0 - initial version
-    # 1.1 - added code to remove apps for selected vnet before creating new app
-    version = "1.1.3"
-    print "Elbrys Developer Portal FirstSdnApp"
-    print "Version: " + version
-    print "A very simple that uses Elbrys' Developer Portal."
-    print __doc__
-
-    # --------------------------------
-    #    Command Line Processing
-    parser = GetCommandLineParser()
-    args = parser.parse_args()
-
-    odlsBaseUrl = "http://" + args.server + ":" + args.port
-    odlsBaseOpenNacUrl = odlsBaseUrl + "/ape/v1"
-    odlsBaseRestConfUrl = odlsBaseUrl + "/restconf"
-
-    print "Elbrys Developer Portal API is at: " + odlsBaseUrl
-    print "Elbrys Developer Portal OpenNAC API is at: " + odlsBaseOpenNacUrl
-    print "Elbrys Developer Portal RESTCONF API is at: " + odlsBaseRestConfUrl
-
-    if (args.api == 'restconf'):
-        restconf_main(args)
-    elif (args.api == 'opennac'):
-        opennac_main(args, parser)
-
 # The BASE url where the Elbrys' SDN Developer Portal api listens
 odlsBaseUrl = None
 odlsBaseOpenNacUrl = None
-odlsBaseRestConfUrl = None
 
 if __name__ == "__main__":
     main()
