@@ -109,8 +109,9 @@ optional arguments:
                    logon, select "My Account" in top right.
   --server SERVER  The IP address of your ODL-S server. Go to sdn-
                    developer.elbrys.com, logon, look at "Controller" table.
-  --port PORT      The TCP port number of your ODL-S server. Go to sdn-
-                   developer. elbrys.com, logon, look at "Controller" table.
+  --port PORT      The TCP OpenFlow API port number of your ODL-S server. Go
+                   to sdn-developer.elbrys.com, logon, look at "Controller"
+                   table for OpenFlow Port.
 ```
 
 # Example Command Line
