@@ -95,16 +95,16 @@ optional arguments:
                    for REST API Port.
 ```
 
-# FirstSdnAppSwitch.py Usage
+# FirstSwitch.py Usage
 
 This must be run on a (virtual) machine running Mininet.
 It will create a virtual switch with one host (endpoint).  It will connect the switch to your running instance of ODL-S.
-You can run FirstSdnAppSwitch.py with -h flag to get its usage.
+You can run FirstSwitch.py with -h flag to get its usage.
 
 ```bash
-usage: FirstSdnAppSwitch.py [-h] --id ID --server SERVER --port PORT
+usage: FirstSwitch.py [-h] --id ID --server SERVER --port PORT
 
-Simple Mininet application to create and connect Mininet switch to ODL-S.
+Simple Mininet application to create and connect Mininet switch to SDN Developer Lab.
 
 optional arguments:
   -h, --help       show this help message and exit
@@ -117,7 +117,7 @@ optional arguments:
                    table for OpenFlow Port.
 ```
 
-# Example Command Line
+# Example Command Line for FirstSdnApp
 ```
 python FirstSdnApp.py --id Ra8beAb --secret H5tuNnQe --switch 5001871fc0  --server 1.2.3.4 --port 5678
 ```
