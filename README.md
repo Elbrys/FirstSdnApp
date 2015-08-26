@@ -97,8 +97,8 @@ optional arguments:
 
 # FirstSwitch.py Usage
 
-This must be run on a (virtual) machine running Mininet.
-It will create a virtual switch with one host (endpoint).  It will connect the switch to your running instance of ODL-S.
+This must be run on a (virtual) machine running Mininet.  Obtain a pre-configured virtual machine image by going to your SDN Developer Lab page (https://sdn-developer.elbrys.com) and scrolling to the 'Devices' table and click the 'Download Mininet VM'.  Import that OVA file into your virtual machine manager.  
+It will create a virtual switch with two hosts (endpoints).  It will connect the switch to your running instance of ODL-S.
 You can run FirstSwitch.py with -h flag to get its usage.
 
 ```bash
