@@ -23,17 +23,20 @@ def myNetwork(d, server, port):
 
     info('*** Add switches\n')
     s1 = net.addSwitch('s1', cls=OVSKernelSwitch, dpid=d)
-    Intf('eth2', node=s1)
+    Intf('eth1', node=s1)
 
     info('*** Add hosts\n')
     h1 = net.addHost('h1', ip='0.0.0.0')
+    h2 = net.addHost('h2', ip='0.0.0.0')
 
     info('*** Add links\n')
     net.addLink(h1, s1)
+    net.addLink(h2, s1)
 
     info('*** Starting network\n')
     net.start()
     h1.cmdPrint('dhclient ' + h1.defaultIntf().name)
+    h2.cmdPrint('dhclient ' + h2.defaultIntf().name)
     print " "
     print "If your application is using OpenDaylight RESTCONF api then \
 you are ready to go.  Go write your app.\n\n\
