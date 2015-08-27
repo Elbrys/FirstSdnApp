@@ -106,8 +106,6 @@ def main():
     global odlsBaseUrl
     global odlsBaseRestConfUrl
     # The version of the application
-    # 1.0 - initial version
-    # 1.1 - added code to remove apps for selected vnet before creating new app
     version = "1.1.3"
     print "Elbrys Developer Portal FirstRestconfApp"
     print "Version: " + version
