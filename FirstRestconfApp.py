@@ -2,7 +2,7 @@
 """
 DESCRIPTION:
     This is an extremely simple Python application that demonstrates how to
-     use Elbrys ODL as a service - ODL-S (dev.elbrys.com) to
+     use Elbrys SDN Developer Lab (dev.elbrys.com) to
     control endpoint user sessions access to the network.
 
     This application will use the RESTCONF api to obtain the networks
@@ -80,23 +80,23 @@ def GetCommandLineParser():
                      to switch.')
     parser.add_argument('--id',
                         required=True,
-                        help='your ODL-S Application id.  Go to sdn-developer.\
+                        help='your SDN Developer Lab Application id.  Go to sdn-developer.\
                         elbrys.com, logon, select "My Account" in top right.')
     parser.add_argument('--secret',
                         required=True,
-                        help='your ODL-S Application secret. Go to\
+                        help='your SDN Developer Lab Application secret. Go to\
                               sdn-developer.elbrys.com, logon, select "My\
                               Account", select "Edit Account", select the\
                               "eyeball" icon next to password.')
     parser.add_argument('--server',
                         required=True,
-                        help='The IP address of your ODL-S server.  Go to \
+                        help='The IP address of your SDN Developer Lab controller.  Go to \
                               sdn-developer.elbrys.com, logon, look at \
                               "Controller" table.')
     parser.add_argument('--port',
                         required=True,
-                        help='The TCP REST API port number of your ODL-S \
-                              server. Go to sdn-developer.elbrys.com, \
+                        help='The TCP REST API port number of your SDN Developer Lab \
+                              controller. Go to sdn-developer.elbrys.com, \
                               logon, look at "Controller" table for \
                               REST API Port.')
     return parser

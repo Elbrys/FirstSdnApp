@@ -100,7 +100,7 @@ optional arguments:
 # FirstSwitch.py Usage
 
 This must be run on a (virtual) machine running Mininet.  Obtain a pre-configured virtual machine image by going to your SDN Developer Lab page (https://sdn-developer.elbrys.com) and scrolling to the 'Devices' table and click the 'Download Mininet VM'.  Import that OVA file into your virtual machine manager.  
-It will create a virtual switch with two hosts (endpoints).  It will connect the switch to your running instance of ODL-S.
+It will create a virtual switch with two hosts (endpoints).  It will connect the switch to your running instance of SDN Developer Lab. 
 You can run FirstSwitch.py with -h flag to get its usage.
 
 ```bash
@@ -126,11 +126,11 @@ python FirstSdnApp.py --id Ra8beAb --secret H5tuNnQe --switch 5001871fc0  --serv
 
 # Other Example Applications - OpenNAC API
 There is a Github repository for sample applications that use Elbrys' OpenNAC API.  If you clone this repository you will 
-have a number of sample applications showing how to program ODL-S via the OpenNAC API.
+have a number of sample applications showing how to program SDN Developer Lab via the OpenNAC API.
    * https://github.com/Elbrys/ODL-S-Sample-Apps
 
 # Other Example Applications - RESTCONF API
-There is a Github repository for sample applications that use ODL RESTCONF API.  
+There is a Github repository for sample applications that use SDN Developer Lab controller's  RESTCONF API.  
 These sample applications depend on a python library called pybvc.
    * Learn how to install the pybvc library here:  https://github.com/Brcdcomm/pybvc
    * Learn how to install the pybvcsampls (sample apps) here:  https://github.com/Brcdcomm/pybvcsamples

@@ -2,11 +2,11 @@
 """
 DESCRIPTION:
     This is an extremely simple Python application that demonstrates how to
-     use Elbrys ODL as a service - ODL-S (dev.elbrys.com) to
+     use Elbrys SDN Developer Lab (dev.elbrys.com) to
     control endpoint user sessions access to the network.
 
     This application will connect to one of the switches that you have
-    connected in the ODL-S portal (sdn-developer.elbrys.com)
+    connected in the SDN Developer Lab (sdn-developer.elbrys.com)
     and demonstrate blocking and unblocking of network traffic for any device
     connected to the switch.
 
@@ -103,7 +103,7 @@ def CreateApp(authToken, switch, parser):
     RemoveZombieApps(authToken, switch)
 
     url = odlsBaseUrl + '/applications'
-    payload = {'name': 'FirstSdnApp/App1 - Example ODL-S for switch: '
+    payload = {'name': 'FirstSdnApp/App1 - Example SDN Developer Lab for switch: '
                + switch,
                'scope': {'vnets': [switch]}}
     headers = {'content-type': 'application/json',
@@ -177,29 +177,29 @@ def GetCommandLineParser():
                      to switch.')
     parser.add_argument('--id',
                         required=True,
-                        help='your ODL-S Application id.  Go to sdn-developer.\
+                        help='your SDN Developer Lab Application id.  Go to sdn-developer.\
                         elbrys.com, logon, select "My Account" in top right.')
     parser.add_argument('--secret',
                         required=True,
-                        help='your ODL-S Application secret. Go to\
+                        help='your SDN Developer Lab Application secret. Go to\
                               sdn-developer.elbrys.com, logon, select "My\
                               Account", select "Edit Account", select the\
                               "eyeball" icon next to password.')
     parser.add_argument('--server',
                         required=True,
-                        help='The IP address of your ODL-S server.  Go to \
+                        help='The IP address of your SDN Developer Lab controller.  Go to \
                               sdn-developer.elbrys.com, logon, look at \
                               "Controller" table.')
     parser.add_argument('--port',
                         required=True,
-                        help='The TCP REST API port number of your ODL-S \
-                              server. Go to sdn-developer.elbrys.com, \
+                        help='The TCP REST API port number of your SDN Developer Lab \
+                              controller. Go to sdn-developer.elbrys.com, \
                               logon, look at "Controller" table for \
                               REST API Port.')
     parser.add_argument('--switch',
                         required=True,
                         help='the Datapath Id (DPID) for the switch connected \
-                              in ODL-S dashboard without ":" e.g. \
+                              in SDN Developer Lab without ":" e.g. \
                               ccfa00b07b95  Go to sdn-developer.elbrys.com, \
                               logon, look in "Devices" table')
     return parser
@@ -243,7 +243,7 @@ def main():
                 print "Now that an application is connected to your "
                 print " switch any traffic to/from connected user devices \
 will be blocked until a policy is defined.  Also, you can go to your \
-ODL-S dashboard (sdn-developer.elbrys.com) and refresh the screen \
+SDN Developer Lab (sdn-developer.elbrys.com) and refresh the screen \
 you will see this application listed in the applications table. \n \
 Connect a user device (laptop, tablet, phone) to a port on your network \
 device. \n"
@@ -277,7 +277,7 @@ have connectivity.  Try to ping something."
                 print "...application deleted."
                 print ""
                 print "Now that the application is deleted you will continue \
-to have connectivity. \n If you go to your ODL-S dashboard \
+to have connectivity. \n If you go to your SDN Developer Lab \
 (sdn-developer.elbrys.com) and refresh the screen you will \
 no longer see this application listed."
 

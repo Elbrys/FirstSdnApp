@@ -42,7 +42,7 @@ def myNetwork(d, server, port):
 you are ready to go.  Go write your app.\n\n\
 If your application will use the Elbrys OpenNAC API then \
 this is the data for adding the mininet switch to the list of network \
-devices in the ODL-S dashboard (sdn-developer.elbrys.com):"
+devices in the SDN Developer Lab (sdn-developer.elbrys.com):"
     print "    Local MAC: " + re.sub("(.{2})", "\\1:", d, 5, re.DOTALL)
     ip = s1.cmd('ifconfig eth0 | grep \'inet addr\' | cut -d: -f2\
                  | awk \'{print $1}\'')
@@ -57,19 +57,19 @@ if __name__ == '__main__':
     setLogLevel('info')
 
     parser = argparse.ArgumentParser(description='Simple Mininet application\
-     to create and connect Mininet switch to ODL-S.')
+     to create and connect Mininet switch to SDN Developer Lab.')
     parser.add_argument('--id',
                         required=True,
-                        help='your ODL-S Application id.  Go to sdn-developer.\
+                        help='your SDN Developer Lab Application id.  Go to sdn-developer.\
                         elbrys.com, logon, select "My Account" in top right.')
     parser.add_argument('--server',
                         required=True,
-                        help='The IP address of your ODL-S server.  Go to \
+                        help='The IP address of your SDN Developer Lab controller.  Go to \
                               sdn-developer.elbrys.com, logon, look at \
                               "Controller" table.')
     parser.add_argument('--port',
                         required=True,
-                        help='The TCP OpenFlow API port number of your ODL-S \
+                        help='The TCP OpenFlow API port number of your SDN Developer Lab \
                           server. Go to sdn-developer.elbrys.com, \
                           logon, look at "Controller" table for \
                           OpenFlow Port.')
