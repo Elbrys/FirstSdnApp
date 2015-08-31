@@ -1,23 +1,24 @@
 # FirstSdnApp
 
-Two sample SDN applications that work with Elbrys' OpenDaylight as a service (ODL-S).  See http://dev.elbrys.com.
+Two sample SDN applications that work with Elbrys' SDN Developer Lab (SDN platform-as-a-service).  See http://dev.elbrys.com.
 
 One application, FirstSdnApp, uses Elbrys' OpenNAC api. A high-level api for controlling policy for endpoints connecting to your network.
 
-The other application, FirstRestconfApp, uses the RESTCONF api of ODL-S to get the network topology.
+The other application, FirstRestconfApp, uses the RESTCONF api of OpenDaylight to get the network topology.
 
-Another application, FirstSdnAppSwitch, should be run on a Mininet VM.  It will create a Mininet switch and connect it to your ODL-S instance.  Run this before running FirstSdnApp or FirstRestconfApp.
+Another application, FirstSdnAppSwitch, should be run on a Mininet VM.  It will create a Mininet switch and connect it to your instance of SDN Developer Lab.  Run this before running FirstSdnApp or FirstRestconfApp.
+
+To get started quickly, check out https://github.com/Elbrys/SDN-Developer-Lab/wiki
 
 
 # Current Version
 1.0.1
 
 # Prerequisites
-   - A free account on Elbrys ODL-S 
-       - Go to http://sdn-developer.elbrys.com and sign-up (or logon with your github account)
+   - A free account on Elbrys SDN Developer Lab 
+       - Follow our [Quickstart](https://github.com/Elbrys/SDN-Developer-Lab/wiki)
    - An OpenFlow switch connected to it (virtual (Mininet) switch will work)
-       - Go to https://github.com/Elbrys/ODL-S/wiki/Connect-Network-Device and follow the instructions there
-       - You can use instructions for Mininet and then use the FirstSdnAppSwitch.py found in this repository to create the switch for you.
+       - Follow our [Quickstart](https://github.com/Elbrys/SDN-Developer-Lab/wiki)
    - Python 2.7.x: 
        - Test if your system already has it
 
@@ -57,17 +58,17 @@ Simple SDN Application to block/unblock devices connected to switch.
 
 optional arguments:
   -h, --help       show this help message and exit
-  --id ID          your ODL-S Application id. Go to sdn-developer. elbrys.com,
+  --id ID          your SDN Developer Lab Application id. Go to sdn-developer. elbrys.com,
                    logon, select "My Account" in top right.
-  --secret SECRET  your ODL-S Application secret. Go to sdn-
+  --secret SECRET  your SDN Developer Lab Application secret. Go to sdn-
                    developer.elbrys.com, logon, select "My Account", select
                    "Edit Account", select the "eyeball" icon next to password.
-  --server SERVER  The IP address of your ODL-S server. Go to sdn-
+  --server SERVER  The IP address of your SDN Developer Lab controller. Go to sdn-
                    developer.elbrys.com, logon, look at "Controller" table.
-  --port PORT      The TCP REST API port number of your ODL-S server. Go to
+  --port PORT      The TCP REST API port number of your SDN Developer Lab controller. Go to
                    sdn-developer.elbrys.com, logon, look at "Controller" table
                    for REST API Port.
-  --switch SWITCH  the Datapath Id (DPID) for the switch connected in ODL-S
+  --switch SWITCH  the Datapath Id (DPID) for the switch connected in SDN Developer Lab 
                    dashboard without ":" e.g. ccfa00b07b95 Go to sdn-
                    developer.elbrys.com, logon, look in "Devices" table
 ```
@@ -84,14 +85,14 @@ Simple SDN Application to block/unblock devices connected to switch.
 
 optional arguments:
   -h, --help       show this help message and exit
-  --id ID          your ODL-S Application id. Go to sdn-developer. elbrys.com,
+  --id ID          your SDN Developer Lab Application id. Go to sdn-developer. elbrys.com,
                    logon, select "My Account" in top right.
-  --secret SECRET  your ODL-S Application secret. Go to sdn-
+  --secret SECRET  your SDN Developer Lab Application secret. Go to sdn-
                    developer.elbrys.com, logon, select "My Account", select
                    "Edit Account", select the "eyeball" icon next to password.
-  --server SERVER  The IP address of your ODL-S server. Go to sdn-
+  --server SERVER  The IP address of your SDN Developer Lab controller. Go to sdn-
                    developer.elbrys.com, logon, look at "Controller" table.
-  --port PORT      The TCP REST API port number of your ODL-S server. Go to
+  --port PORT      The TCP REST API port number of your SDN Developer Lab controller. Go to
                    sdn-developer.elbrys.com, logon, look at "Controller" table
                    for REST API Port.
 ```
@@ -109,11 +110,11 @@ Simple Mininet application to create and connect Mininet switch to SDN Developer
 
 optional arguments:
   -h, --help       show this help message and exit
-  --id ID          your ODL-S Application id. Go to sdn-developer. elbrys.com,
+  --id ID          your SDN Developer Lab Application id. Go to http://sdn-developer.elbrys.com,
                    logon, select "My Account" in top right.
-  --server SERVER  The IP address of your ODL-S server. Go to sdn-
+  --server SERVER  The IP address of your SDN Developer Lab controller. Go to sdn-
                    developer.elbrys.com, logon, look at "Controller" table.
-  --port PORT      The TCP OpenFlow API port number of your ODL-S server. Go
+  --port PORT      The TCP OpenFlow API port number of your SDN Developer Lab controller. Go
                    to sdn-developer.elbrys.com, logon, look at "Controller"
                    table for OpenFlow Port.
 ```
