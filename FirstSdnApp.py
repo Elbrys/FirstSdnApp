@@ -28,12 +28,15 @@ from requests.auth import HTTPBasicAuth
 
 
 def GetAuthToken(user, password, parser):
-    global odlsBaseUrl
+    global odlsBaseOpenNacUrl
     # This calls the  api to create an authorization token to make other calls
     # RETURNS: authorization token
-    url = odlsBaseUrl + '/auth/token'
+    url = odlsBaseOpenNacUrl + '/auth/token'
     headers = {'content-type': 'application/json'}
     user = "name=" + user
+    print url
+    print user
+    print password
     appId = requests.get(url, headers=headers, auth=HTTPBasicAuth(user,
                          password))
     status = appId.status_code
@@ -53,8 +56,8 @@ the id and secret you entered."
 
 
 def GetApps(authToken):
-    global odlsBaseUrl
-    url = odlsBaseUrl + '/applications'
+    global odlsBaseOpenNacUrl
+    url = odlsBaseOpenNacUrl + '/applications'
     headers = {'content-type': 'application/json',
                'Authorization': 'bearer ' + authToken}
     r = requests.get(url, headers=headers)
@@ -66,8 +69,8 @@ def GetApps(authToken):
 
 
 def GetAppInfo(authToken, appId):
-    global odlsBaseUrl
-    url = odlsBaseUrl + '/applications/' + appId
+    global odlsBaseOpenNacUrl
+    url = odlsBaseOpenNacUrl + '/applications/' + appId
     headers = {'content-type': 'application/json',
                'Authorization': 'bearer ' + authToken}
     r = requests.get(url, headers=headers)
@@ -97,12 +100,12 @@ def RemoveZombieApps(authToken, switch):
 
 
 def CreateApp(authToken, switch, parser):
-    global odlsBaseUrl
+    global odlsBaseOpenNacUrl
     # This calls the  api to create an application
     # RETURNS: app identifier
     RemoveZombieApps(authToken, switch)
 
-    url = odlsBaseUrl + '/applications'
+    url = odlsBaseOpenNacUrl + '/applications'
     payload = {'name': 'FirstSdnApp/App1 - Example SDN Developer Lab for switch: '
                + switch,
                'scope': {'vnets': [switch]}}
@@ -125,7 +128,7 @@ def CreateApp(authToken, switch, parser):
 
 
 def CreateUnblockPolicy(authToken, appId):
-    global odlsBaseUrl
+    global odlsBaseOpenNacUrl
     # This calls the  api to create an authenticated
     # policy for the application.
     # This is the policy that a new endpoint will
@@ -134,7 +137,7 @@ def CreateUnblockPolicy(authToken, appId):
     #    - allow any packet to pass
     # RETURNS: app identifier
     # Now create authenticated policy using network resource
-    url = odlsBaseUrl + '/applications/' + appId + '/policies'
+    url = odlsBaseOpenNacUrl + '/applications/' + appId + '/policies'
     payload = {'name': 'unblocked',
                'default': True,
                'rules':
@@ -161,10 +164,10 @@ def CreateUnblockPolicy(authToken, appId):
 
 
 def DeleteApp(authToken, appId):
-    global odlsBaseUrl
+    global odlsBaseOpenNacUrl
     # This calls the  api to delete an application
     # RETURNS: app identifier
-    url = odlsBaseUrl + '/applications/' + appId
+    url = odlsBaseOpenNacUrl + '/applications/' + appId
     headers = {'content-type': 'application/json',
                'Authorization': 'bearer ' + authToken}
     requests.delete(url, headers=headers)
